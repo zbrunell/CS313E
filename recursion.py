@@ -46,11 +46,10 @@ def group_sum_6(start, nums, target):
         return False
     if nums[start] == 6:
         return group_sum_6(start + 1, nums, target - nums[start])
-    else:
-        if group_sum_6(start + 1, nums, target - nums[start]):
-            return True
-        if group_sum_6(start + 1, nums, target):
-            return True
+    if group_sum_6(start + 1, nums, target - nums[start]):
+        return True
+    if group_sum_6(start + 1, nums, target):
+        return True
     return False
 
 def group_no_adj(start, nums, target):
@@ -88,8 +87,7 @@ def group_sum_5(start, nums, target):
     if nums[start] % 5 == 0:
         if start + 1 < len(nums) and nums[start + 1] == 1:
             return group_sum_5(start + 2, nums, target - nums[start])
-        else:
-            return group_sum_5(start + 1, nums, target - nums[start])
+        return group_sum_5(start + 1, nums, target - nums[start])
     return (group_sum_5(start + 1, nums, target - nums[start])
             or group_sum_5(start +1, nums, target))
 def group_sum_clump(start, nums, target):
