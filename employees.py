@@ -40,8 +40,8 @@ class Employee(ABC):
         self.is_employed = True
         self.__name = name
         self.__manager = manager
-        self.__performance = INITIAL_PERFORMANCE
-        self.__happiness = INITIAL_HAPPINESS
+        self.performance = INITIAL_PERFORMANCE
+        self.happiness = INITIAL_HAPPINESS
         self._salary = salary
     @property
     def name(self):
