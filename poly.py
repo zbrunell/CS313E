@@ -97,21 +97,58 @@ class Node:
 
 
 class LinkedList:
+    """
+    A LinkedList class that represents a polynomial as a linked list of terms,
+    where each term is represented by a node.
+    Each node in the linked list contains:
+    - A coefficient (`coeff`) representing the multiplier of the term.
+    - An exponent (`exp`) representing the power of the variable.
+    - A reference to the next node (`next`), which forms the linked structure.
+    This class supports polynomial operations such as:
+    - Insertion of terms in descending order of exponents.
+    - Addition of two polynomials.
+    - Multiplication of two polynomials.
+    The terms in the linked list are stored in descending order by exponent, 
+    ensuring that the highest exponent term is at the head of the list. 
+    If two terms have the same exponent, their coefficients are added together.
+    Methods:
+    - `insert_term(coeff, exp)`: Inserts a new term with a given coefficient
+    and exponent into the linked list, keeping the list in descending order by exponent.
+    - `add(p)`: Adds the current polynomial with another polynomial `p`,
+    returning a new LinkedList representing the sum.
+    - `mult(p)`: Multiplies the current polynomial with another polynomial `p`, 
+    returning a new LinkedList representing the product.
+    - `__str__()`: Returns a string representation of the polynomial in standard form, 
+    showing the terms in descending order of exponents.
+    """
     def __init__(self):
-        # You are also welcome to use a sentinel/dummy node!
+        '''# You are also welcome to use a sentinel/dummy node!
         # It is definitely recommended, which will we learn more
         # about in class on Monday 3/24. If you choose to use
         # a dummy node, comment out the self.head = None
         # and comment in the below line. We use None to make sure
         # if there is an error where you accidentally include the
         # dummy node in your calculation, it will throw an error.
-        # self.dummy = Node(None, None)
+        # self.dummy = Node(None, None)'''
         self.head = None
 
     # Insert the term with the coefficient coeff and exponent exp into the polynomial.
     # If a term with that exponent already exists, add the coefficients together.
     # You must keep the terms in descending order by exponent.
     def insert_term(self, coeff, exp):
+        """
+    Insert a term with the given coefficient and exponent into the polynomial.
+
+    If a term with the same exponent already exists, the coefficients are added together.
+    The polynomial terms are always kept in descending order by exponent.
+
+    Args:
+        coeff (int): The coefficient of the term to be inserted.
+        exp (int): The exponent of the term to be inserted.
+
+    Returns:
+        None: This method modifies the linked list in place.
+    """
         if coeff == 0:
             return
         new_node = Node(coeff, exp)
@@ -140,6 +177,19 @@ class LinkedList:
 
     # Add a polynomial p to the polynomial and return the resulting polynomial as a new linked list.
     def add(self, p):
+        """
+    Add another polynomial to the current polynomial
+    and return the resulting polynomial as a new linked list.
+    The two polynomials are added term by term. If a term with the 
+    same exponent exists in both polynomials, 
+    their coefficients are added together. If a term's coefficient becomes zero, 
+    that term is removed from the result.
+    The terms in the resulting polynomial are sorted in descending order by exponent.
+    Args:
+        p (LinkedList): The polynomial to be added to the current polynomial.
+    Returns:
+        LinkedList: A new linked list representing the sum of the two polynomials.
+        """
         result = LinkedList()
         curr1 = self.head
         curr2 = p.head
@@ -163,31 +213,115 @@ class LinkedList:
                     result.insert_term(new_coeff, curr1.exp)
                 curr1 = curr1.next
                 curr2 = curr2.next
-
         return result
-
-
-
-         
-
     # Multiply a polynomial p with the polynomial and return the product as a new linked list.
     def mult(self, p):
-        pass
+        """
+    Multiply the current polynomial by another polynomial
+      and return the product as a new linked list.
+    This method multiplies each term of the current polynomial by each term of the given polynomial.
+    The exponents are added, and the coefficients are multiplied. 
+    If two terms have the same exponent in 
+    the resulting polynomial, their coefficients are combined.
+    The terms in the resulting polynomial are 
+    sorted in descending order by exponent.
+    Args:
+        p (LinkedList): The polynomial to be multiplied with the current polynomial.
+    Returns:
+        LinkedList: A new linked list representing the product of the two polynomials.
+        """
+        result = LinkedList()
+        if self.head is None or p.head is None:
+            return result
+        p1 = self.head
+        while p1:
+            p2 = p.head
+            while p2:
+                result.insert_term(p1.coeff * p2.coeff, p1.exp + p2.exp)
+                p2 = p2.next
+            p1 = p1.next
+        return result
 
-    # Return a string representation of the polynomial.
     def __str__(self):
-        pass
+        if not self.head:
+            return ''
+        terms = []
+        current = self.head
+        while current:
+            coeff = current.coeff
+            exp =  current.exp
+            if coeff == 0:
+                current = current.next
+                continue
+            if exp == 0:
+                term = f'{coeff}'
+            elif exp == 1:
+                if coeff == 1:
+                    term = "x"
+                elif coeff == -1:
+                    term = "-x"
+                else:
+                    term = f"{coeff}x"
+            else:
+                if coeff == 1:
+                    term = f"x^{exp}"
+                elif coeff == -1:
+                    term = f"-x^{exp}"
+                else:
+                    term = f"{coeff}x^{exp}"
 
+            terms.append(term)
+            current = current.next
+
+        return " + ".join(terms).replace("+ -", "- ")
 
 def main():
-    # read data from stdin (terminal/file) using input() and create polynomial p
+    """
+    Main function to interact with the user and perform polynomial operations.
+    This function prompts the user to input two 
+    polynomials as a series of coefficient-exponent pairs.
+    It then creates LinkedList objects for each polynomial and performs the following operations:
+    - Adding the two polynomials together.
+    - Multiplying the two polynomials together.
+    The results of both operations are displayed as string 
+    representations of the resulting polynomials.
+    The user is prompted to input the coefficient-exponent pairs of 
+    each polynomial in the following format:
+    - Coefficient Exponent Coefficient Exponent ...
+    Example:
+    Enter the first polynomial (coeff exp pairs):
+    3 2 4 1 5 0
+    Enter the second polynomial (coeff exp pairs):
+    2 2 1 1 6 0
+    This will add the two polynomials and multiply them, printing the resulting sum and product.
+    """
+    def read_p():
+        poly = LinkedList()
+        try:
+            user_input = input().strip().split()
+            if len(user_input) % 2 != 0:
+                raise ValueError("Invalid input: Must provide coefficient-exponent pairs.")
+            for i in range(0, len(user_input), 2):
+                coeff = int(user_input[i])
+                exp = int(user_input[i + 1])
+                poly.insert_term(coeff, exp)
+        except ValueError as e:
+            print("Error reading polynomial:", e)
+            return None
+        return poly
 
-    # read data from stdin (terminal/file) using input() and create polynomial q
-
-    # get sum of p and q as a new linked list and print sum
-
-    # get product of p and q as a new linked list and print product
-    pass
+    print("Enter the first polynomial (coeff exp pairs):")
+    p = read_p()
+    if p is None:
+        return
+    print("Enter the second polynomial (coeff exp pairs):")
+    q = read_p()
+    if q is None:
+        return
+    sum_poly = p.add(q)
+    product_poly = p.mult(q)
+    print("Sum:", sum_poly)
+    print("Product:", product_poly)
 
 
 if __name__ == "__main__":
