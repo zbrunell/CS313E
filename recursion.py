@@ -1,9 +1,10 @@
+
 """
 Student information for this assignment:
 
 Replace <FULL NAME> with your name.
-On my/our honor, <Zachary Brunell> and <FULL NAME>, this
-programming assignment is my own work and I have not provided this code to
+On my/our honor, Zachary Brunell, this 
+programming assignment is my own work and I have not provided this code to 
 any other student.
 
 I have read and understand the course syllabus's guidelines regarding Academic
@@ -13,175 +14,156 @@ code to someone else), the case shall be submitted to the Office of the Dean of
 Students. Academic penalties up to and including an F in the course are likely.
 
 UT EID 1: ztb456
-UT EID 2:
 """
-def group_sum(start, nums, target):
-    """
-    Given a list of ints, determine if there exists a group of some ints that sum to the
-    given target.
+import sys
+STEP_SIZE_CONSTANT = 3
 
-    pre: start >= 0, len(nums) >= 0, target >= 0, nums will only contain ints
-    post: return True if nums has a group of ints that sum to target, False otherwise
-    """
-    if target == 0:
-        return True
-    if start >= len(nums):
+
+def is_prime(n):
+    """Returns True if n is prime, otherwise False.
+    Parameters:
+    int n
+    Returns:
+    int n"""
+    if n < 2:
         return False
-    if group_sum(start + 1, nums, target):
+    if n in (2, 3):
         return True
-    if group_sum(start + 1, nums, target - nums[start]):
-        return True
-
-    return False
-
-def group_sum_6(start, nums, target):
-    """
-    Given a list of ints, determine if there exists a group of some ints that sum to the
-    given target. Additionally, if there is are 6's present in the array, they must all
-    be chosen.
-
-    pre: start >= 0, len(nums) >= 0, target >= 0, nums will only contain ints
-    post: return True if nums has a group of ints that sum to target, False otherwise
-    """
-    if target == 0:
-        return True
-    if start >= len(nums):
+    if n % 2 == 0:
         return False
-    if nums[start] == 6:
-        return group_sum_6(start + 1, nums, target - nums[start])
-    else:
-        if group_sum_6(start + 1, nums, target - nums[start]):
-            return True
-        if group_sum_6(start + 1, nums, target):
-            return True
-    return False
-
-def group_no_adj(start, nums, target):
-    """
-    Given a list of ints, determine if there exists a group of some ints that sum to
-    the given target. Additionally, if a value is chosen, the value immediately after
-    (the value adjacent) cannot be chosen.
-
-    pre: start >= 0, len(nums) >= 0, target >= 0, nums will only contain ints
-    post: return True if nums has a group of ints that sum to target, False otherwise
-    """
-    if target == 0:
-        return True
-    if start >= len(nums):
-        return False
-    if group_no_adj(start + 2, nums, target - nums[start]):
-        return True
-    if group_no_adj(start + 1, nums, target):
-        return True
-    return False
-
-def group_sum_5(start, nums, target):
-    """
-    Given a list of ints, determine if there exists a group of some ints that sum to
-    the given target. Additionally, if a multiple of 5 is in the array, it must be included
-    If the value immediately following a multiple of 5 if 1, it must not be chosen
-
-    pre: start >= 0, len(nums) >= 0, target >= 0, nums will only contain ints
-    post: return True if nums has a group of ints that sum to target, False otherwise
-    """
-    if target == 0:
-        return True
-    if start >= len(nums):
-        return False
-    if nums[start] % 5 == 0:
-        if start + 1 < len(nums) and nums[start + 1] == 1:
-            return group_sum_5(start + 2, nums, target - nums[start])
-        else:
-            return group_sum_5(start + 1, nums, target - nums[start])
-    return (group_sum_5(start + 1, nums, target - nums[start])
-            or group_sum_5(start +1, nums, target))
-def group_sum_clump(start, nums, target):
-    """
-    Given a list of ints, determine if there exists a group of some ints that sum to
-    the given target. Additionally, if there is a group of identical numbers in succession,
-    they must all be chosen, or none of them must be chosen.
-    EX: [1, 2, 2, 2, 5, 2], all three of the middle 2's must be chosen, or none of them must be
-    chosen to be included in the sum. One loop is allowed to check for identical numbers.
-
-    pre: start >= 0, len(nums) >= 0, target >= 0, nums will only contain ints
-    post: return True if nums has a group of ints that sum to target, False otherwise
-    """
-    if target == 0:
-        return True
-    if start >= len(nums):
-        return False
-    n_start = nums[start]
-    next_i = start + 1
-    while next_i < len(nums) and nums[next_i] == nums[start]:
-        n_start += nums[next_i]
-        next_i += 1
-    return (group_sum_clump(next_i, nums, target - n_start) or
-            group_sum_clump(next_i, nums, target))
-
-def split_array(nums):
-    """
-    Given a list of ints, determine if the numbers can be split evenly into two groups
-    The sum of these two groups must be equal
-    Write a recursive helper to call from this function
-
-    pre: len(nums) >= 0, nums will only contain ints
-    post: return True if nums can be split, False otherwise
-    """
-    dic = {}
-    def helper(start, target):
-        if target == 0:
-            return True
-        if target < 0 or start >= len(nums):
+    for div in range(3, int(n ** 0.5) + 1, 2):
+        if n % div == 0:
             return False
-        if (start, target) in dic:
-            return dic[(start, target)]
-        include = helper(start + 1, target - nums[start])
-        exclude = helper(start + 1, target)
-        result = include or exclude
-        dic[(start, target)] = result
-        return result
-    total_sum = sum(nums)
-    if not total_sum % 2 == 0:
-        return False
-    target = total_sum // 2
-    return helper(0, target)
+    return True
 
-def split_odd_10(nums):
-    """
-    Given a list of ints, determine if the numbers can be split evenly into two groups
-    The sum of one group must be odd, while the other group must be a multiple of 10
-    Write a recursive helper to call from this function
 
-    pre: len(nums) >= 0, nums will only contain ints
-    post: return True if nums can be split, False otherwise
-    """
-    def helper(start, odd, s10):
-        if start == len(nums):
-            return (odd % 2 != 0) and (s10 % 10 == 0)
-        current = nums[start]
-        including_odd = helper(start + 1 , odd + current, s10)
-        including_s10 = helper(start + 1, odd, s10 + current)
-        return including_odd or including_s10
-    return helper(0, 0, 0)
+def next_prime(n):
+    """Finds the next prime number greater than or equal to n."""
+    while not is_prime(n):
+        n += 1
+    return n
 
-def split_53(nums):
-    """
-    Given a list of ints, determine if the numbers can be split evenly into two groups
-    The sum of these two groups must be equal
-    Additionally, all multiples of 5 must be in one group, and all multiples of 3 (and not 5)
-    must be in the other group
-    Write a recursive helper to call from this function
 
-    pre: len(nums) >= 0, nums will only contain ints
-    post: return True if nums can be split, False otherwise
+def hash_word(s, size):
+    """Hashes a lowercase string to an index in a hash table."""
+    hash_idx = 0
+    for c in s:
+        letter = ord(c) - 96  # Convert 'a' to 1, 'b' to 2, ..., 'z' to 26
+        hash_idx = (hash_idx * 26 + letter) % size
+    return hash_idx
+
+
+def step_size(s):
+    """Calculates step size for double hashing to avoid infinite loops."""
+    step = STEP_SIZE_CONSTANT - (hash_word(s, STEP_SIZE_CONSTANT) % STEP_SIZE_CONSTANT)
+    return max(step, 1)  # Ensure step size is never 0
+
+
+def insert_word(s, hash_table):
+    """Inserts a string into the hash table using double hashing for collision resolution."""
+    table_size = len(hash_table)
+    index = hash_word(s, table_size)
+
+    if hash_table[index] == "":
+        hash_table[index] = s
+        return
+
+    step = step_size(s)
+    original = index
+
+    while hash_table[index] != "":
+        if hash_table[index] == s:  # Avoid inserting duplicates
+            return
+        index = (index + step) % table_size
+        if index == original:  # Prevent infinite loop
+            return
+    hash_table[index] = s
+
+
+def find_word(s, hash_table):
+    """Searches for a string in the hash table."""
+    table_size = len(hash_table)
+    index = hash_word(s, table_size)
+    step = step_size(s)
+
+    while hash_table[index] != "":
+        if hash_table[index] == s:
+            return True
+        index = (index + step) % table_size
+    return False
+
+
+def is_reducible(s, hash_table, hash_memo):
+    """Checks if a word is reducible by recursively reducing it."""
+    if s in ["a", "i", "o"]:  # Base case: single-letter words
+        return True
+    if find_word(s, hash_memo):  # If memoized, return True
+        return True
+
+    for i in range(len(s)):
+        sub_word = s[:i] + s[i + 1:]  # Remove one character
+        if find_word(sub_word, hash_table) and is_reducible(sub_word, hash_table, hash_memo):
+            insert_word(s, hash_memo)  # Memoize reducible words
+            return True
+
+    return False
+
+
+def get_longest_words(string_list):
+    """Finds the longest words from a list. 
+    
+    Returns a list of the longest words in `string_list`. 
+    If the input list is empty, returns an empty list.
+
+    Parameters:
+    string_list (list[str]): A list of words.
+
+    Returns:
+    list[str]: A list containing the longest words.
     """
-    def helper(start, s5, s3):
-        if start == len(nums):
-            return s5 == s3
-        current = nums[start]
-        if current % 5 == 0:
-            return helper(start + 1, s5 + current, s3)
-        if current % 3 ==0:
-            return helper(start + 1, s5, s3 + current)
-        return helper(start + 1, s5 + current, s3) or helper(start + 1, s5, s3 + current)
-    return helper(0, 0, 0)
+    if not string_list:
+        return []
+    max_length = max(len(word) for word in string_list)
+    return [word for word in string_list if len(word) == max_length]
+
+
+def main():
+    """The main function that calculates the longest reducible words."""
+    word_list = []
+    try:
+        for line in sys.stdin:
+            word = line.strip()
+            if word:
+                word_list.append(word)
+    except EOFError:
+        pass
+
+    word_list_length = len(word_list)
+    if word_list_length == 0:
+        return
+
+    # Determine prime numbers for hash tables
+    n_ = next_prime(2 * word_list_length)
+    m_= next_prime(int(0.2 * word_list_length) + 1)
+
+    # Create hash tables
+    hash_list = [""] * n_
+    hash_memo = [""] * m_
+
+    # Insert words into hash table
+    for word in word_list:
+        insert_word(word, hash_list)
+
+    # Find reducible words
+    reducible_words = [word for word in word_list if is_reducible(word, hash_list, hash_memo)]
+
+    # Get longest reducible words
+    longest_reducible_words = get_longest_words(reducible_words)
+
+    # Print longest reducible words in alphabetical order
+    for word in sorted(longest_reducible_words):
+        print(word)
+
+
+if __name__ == "__main__":
+    main()
