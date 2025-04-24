@@ -1,3 +1,4 @@
+
 """
 Student information for this assignment:
 
@@ -187,11 +188,11 @@ def vigenere_decode(string, phrase):
 def main():
     """Main function that reads stdin and runs each cipher"""
     print("Rail Fence Cipher\n")
-    print("Plain Text: ")
+    print("Plain Text: ", end="")
     plain_text_rail_fence = input().strip()
     print(plain_text_rail_fence)
     # read the key from stdin (terminal/input)
-    print("Key: ")
+    print("Key: ", end="")
     key_rail_fence = input().strip()
     print(key_rail_fence)
     key_rail_fence = int(key_rail_fence)
@@ -199,11 +200,11 @@ def main():
     encoded_text_rail_fence = rail_fence_encode(plain_text_rail_fence, key_rail_fence)
     print(f"Encoded Text: {encoded_text_rail_fence}\n")
     # read encoded text from stdin (terminal/input)
-    print("Encoded Text: ")
+    print("Encoded Text: ", end="")
     encoded_text_rail_fence_input = input().strip()
     print(encoded_text_rail_fence_input)
     # read the key from stdin (terminal/input)
-    print("Enter Key: ")
+    print("Enter Key: ", end="")
     key_rail_fence_input_raw = input().strip()
     print(key_rail_fence_input_raw)
     key_rail_fence_input = int(key_rail_fence_input_raw)
@@ -213,22 +214,22 @@ def main():
     print(f"Decoded Text: {decoded_text_rail_fence}\n")
     # read the plain text from stdin (terminal/input)
     print("Vigenere Cipher\n")
-    print("Plain Text: ")
+    print("Plain Text: ", end="")
     plain_text_vigenere = input().strip()
     print(plain_text_vigenere)
     # read the pass phrase from stdin (terminal/input)
-    print("Pass Phrase: ")
+    print("Pass Phrase: ", end="")
     pass_phrase_vigenere = input().strip()
     print(pass_phrase_vigenere)
     # encrypt and print the encoded text using Vigenere cipher
     encoded_text_vigenere = vigenere_encode(plain_text_vigenere, pass_phrase_vigenere).strip()
     print(f"Encoded Text: {encoded_text_vigenere}\n")
     # read the encoded text from stdin (terminal/input)
-    print("Encoded Text: ")
+    print("Encoded Text: ", end="")
     encoded_text_vigenere_input = input().strip()
     print(encoded_text_vigenere_input)
     # read the pass phrase from stdin (terminal/input)
-    print("Pass Phrase: ")
+    print("Pass Phrase: ", end="")
     pass_phrase_vigenere_input = input().strip()
     print(pass_phrase_vigenere_input)
     # decrypt and print the plain text using Vigenere cipher
