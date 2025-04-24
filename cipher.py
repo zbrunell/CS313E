@@ -167,9 +167,12 @@ def vigenere_decode(string, phrase):
     post: function returns a single string that is decoded with
         Vigenere algorithm
     """
+    string = string.lower()
+    phrase = phrase.lower()
     filtered_string = filter_string(string)
     decoded_string = ""
     phrase_length = len(phrase)
+
 
     for i, char in enumerate(filtered_string):
         phrase_char = phrase[i % phrase_length]
