@@ -16,10 +16,6 @@ UT EID 1: ztb456
 UT EID 2:
 """
 
-# TODO: Delete this import if you choose not to use it. Delete this comment when you are done.
-import sys
-
-
 class HeapError(Exception):
     """
     Custom exception class for heap errors.
@@ -359,20 +355,15 @@ class Graph:
             if self.adjacency_matrix[vertex_index][j]:
                 vertices.append(j)
         return vertices
-
-
-    # TODO: Modify this method. You may delete this comment when you are done.
     def compute_depth(self):
         """Computes depth for each vertex in the graph."""
         def dfs(v):
             if self.vertices[v].depth != -1:
-                return self.vertices[v].depth
-            
+                return self.vertices[v].depth 
             neighbors = self.get_adjacent_vertices(v)
             if not neighbors:
                 self.vertices[v].depth = 0
                 return 0
-            
             max_depth = 0
             for neighbor in neighbors:
                 max_depth = max(max_depth, dfs(neighbor))
@@ -380,7 +371,7 @@ class Graph:
             return self.vertices[v].depth
         for i in range(len(self.vertices)):
             dfs(i)
-    # TODO: Modify this method. You may delete this comment when you are done.
+
     def has_cycle(self):
         """
         Determine whether or not the graph has a cycle.
@@ -415,8 +406,7 @@ class Graph:
                         stack.push((neighbor, 'enter'))
                     elif rec_stack[neighbor]:
                         return True
-        return False      
-    # TODO: Modify this method. You may delete this comment when you are done.
+        return False
     def get_registration_plan(self):
         """
         Return a valid ordering of courses to take for registration as a 2D
@@ -464,9 +454,6 @@ class Graph:
             courses.append(semester)
 
         return courses
-
-
-# TODO: Modify this function. You may delete this comment when you are done.
 def main():
     """
     The main function to retrieve a registration plan.
