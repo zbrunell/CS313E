@@ -359,7 +359,7 @@ class Graph:
         """Computes depth for each vertex in the graph."""
         def dfs(v):
             if self.vertices[v].depth != -1:
-                return self.vertices[v].depth 
+                return self.vertices[v].depth
             neighbors = self.get_adjacent_vertices(v)
             if not neighbors:
                 self.vertices[v].depth = 0
