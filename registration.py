@@ -479,7 +479,7 @@ def main():
     num_vertices = int(input())
 
     for _ in range(num_vertices):
-        label = input.strip()
+        label = input().strip()
         graph.add_vertex(label)
 
     num_edges = int(input())
